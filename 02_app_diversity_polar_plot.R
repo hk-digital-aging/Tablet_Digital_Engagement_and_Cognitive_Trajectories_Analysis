@@ -1,6 +1,3 @@
-# Purpose: Generate the class-specific app diversity polar plots for the manuscript
-# Output: Figure 1B
-
 library(svglite)
 library(dplyr)
 library(ggplot2)
