@@ -1,7 +1,3 @@
-# Purpose: Generate the MoCA trajectory plot for the manuscript
-# Output: Figure 1A
-# Input: analysis-ready dataset with columns Time, Scores, and Class
-
 library(ggplot2)
 
 # Read input data
