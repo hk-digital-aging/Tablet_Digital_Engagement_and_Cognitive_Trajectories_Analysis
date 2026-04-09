@@ -1,6 +1,3 @@
-# Purpose: Generate the absolute monthly duration plot for total digital engagement
-# Output: Figure 2A
-
 library(dplyr)
 library(ggplot2)
 library(ggpubr)
@@ -65,7 +62,7 @@ pa <- ggplot(
 print(pa)
 
 ggsave(
-  filename = "~/Downloads/figure_2a_monthly_tde_duration.jpg",
+  filename = "~/Downloads/figure_2a_monthly_tde_absolute_duration.jpg",
   plot = pa,
   dpi = 600,
   width = 12,
