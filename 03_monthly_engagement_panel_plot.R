@@ -2,15 +2,22 @@ library(dplyr)
 library(ggplot2)
 library(ggpubr)
 library(patchwork)
+library(svglite)
 
-df <- read.csv("~/Downloads/Suppl_data_4_Metadata_MonthlyUsage.csv", stringsAsFactors = FALSE)
+# Read data
+df <- read.csv(
+  "~/Downloads/Suppl_data_4_Metadata_MonthlyUsage.csv",
+  stringsAsFactors = FALSE
+)
 
+# Prepare variables
 df$Months_From_Earliest <- as.factor(df$Months_From_Earliest)
 df$Class <- as.factor(df$Class)
 
 class_colors <- c("#CA601B", "#1B85B2", "#DD0187", "#037203")
 class_labels <- c("Class 1", "Class 2", "Class 3", "Class 4")
 
+# Function to create each monthly panel
 make_monthly_plot <- function(data, y_var, panel_title, y_label, label_y) {
   
   summary_df <- data |>
@@ -22,24 +29,34 @@ make_monthly_plot <- function(data, y_var, panel_title, y_label, label_y) {
       .groups = "drop"
     )
   
-  ggplot(data, aes(x = Months_From_Earliest, y = .data[[y_var]], color = Class)) +
+  ggplot(
+    data,
+    aes(x = Months_From_Earliest, y = .data[[y_var]], color = Class)
+  ) +
     geom_pointrange(
       data = summary_df,
       aes(y = med, ymin = Q1, ymax = Q3),
       position = position_dodge(width = 0.5),
-      size = 0.1,
+      size = 0.18,
       show.legend = TRUE
     ) +
     geom_line(
       data = summary_df,
-      aes(y = med, group = Class)
+      aes(y = med, group = Class),
+      linewidth = 0.5
+    ) +
+    geom_point(
+      data = summary_df,
+      aes(y = med),
+      size = 1.8
     ) +
     stat_compare_means(
       aes(group = Class),
       method = "kruskal.test",
       label = "p.signif",
       label.y = label_y,
-      show.legend = FALSE
+      show.legend = FALSE,
+      size = 3
     ) +
     labs(
       x = "Months",
@@ -56,13 +73,20 @@ make_monthly_plot <- function(data, y_var, panel_title, y_label, label_y) {
       labels = paste("Month", seq_along(levels(data$Months_From_Earliest)))
     ) +
     theme(
-      plot.title = element_text(face = "plain"),
-      axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1),
-      axis.title.x = element_text(margin = margin(t = 20))
+      plot.title = element_text(face = "plain", size = 11, hjust = 0),
+      axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1, size = 8),
+      axis.text.y = element_text(size = 8),
+      axis.title.x = element_text(margin = margin(t = 8), size = 9),
+      axis.title.y = element_text(size = 9),
+      legend.title = element_text(size = 9),
+      legend.text = element_text(size = 8),
+      panel.grid.minor = element_blank()
     )
 }
 
+# -----------------------------
 # TDE plots
+# -----------------------------
 df_all <- subset(df, Categories == "ALL")
 
 pa <- make_monthly_plot(
@@ -97,7 +121,9 @@ pd <- make_monthly_plot(
   label_y = 0.6
 )
 
+# -----------------------------
 # PAE plots
+# -----------------------------
 df_psy <- subset(df, Categories == "Psychological_capacity")
 
 pe <- make_monthly_plot(
@@ -132,7 +158,9 @@ ph <- make_monthly_plot(
   label_y = 0.45
 )
 
+# -----------------------------
 # CAE plots
+# -----------------------------
 df_cog <- subset(df, Categories == "Cognitive_capacity")
 
 pi <- make_monthly_plot(
@@ -167,21 +195,31 @@ pl <- make_monthly_plot(
   label_y = 0.35
 )
 
+# -----------------------------
 # Combine all panels
-p <- pa + pb + pc +
-     pd + pe + pf +
-     pg + ph + pi +
-     pj + pk + pl +
+# Desired layout:
+# Column 1: a b c d
+# Column 2: e f g h
+# Column 3: i j k l
+# -----------------------------
+p <- pa + pe + pi +
+     pb + pf + pj +
+     pc + pg + pk +
+     pd + ph + pl +
   plot_layout(ncol = 3, nrow = 4, guides = "collect") &
-  theme(legend.position = "bottom")
+  theme(
+    legend.position = "bottom",
+    legend.box = "horizontal"
+  )
 
 print(p)
 
+# Save as SVG
 ggsave(
-  filename = "~/Downloads/figure_2_monthly_engagement_panel.png",
+  filename = "~/Downloads/figure_2_monthly_engagement_panel.svg",
   plot = p,
-  dpi = 800,
-  width = 20,
-  height = 16,
+  device = "svg",
+  width = 15,
+  height = 18,
   units = "in"
 )
