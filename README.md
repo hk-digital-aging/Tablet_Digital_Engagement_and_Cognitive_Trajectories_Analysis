@@ -1,4 +1,4 @@
-<img width="468" height="51" alt="image" src="https://github.com/user-attachments/assets/2edf5008-5bd8-498c-8365-79d764e5399a" />This Github repository contains the analysis code for the following paper
+This Github repository contains the analysis code for the following paper
 
 **Frequent engagement in psychological capacity-related apps predicts an optimal cognitive trajectory for community-dwelling older adults: A growth mixture modeling analysis**
 
