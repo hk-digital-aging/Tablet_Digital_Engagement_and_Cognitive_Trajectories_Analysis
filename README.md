@@ -1,6 +1,6 @@
-This Github repository contains the analysis code for the following paper
+<img width="468" height="51" alt="image" src="https://github.com/user-attachments/assets/2edf5008-5bd8-498c-8365-79d764e5399a" />This Github repository contains the analysis code for the following paper
 
-**Frequent Engagement in Psychological Capacity-Related Apps Predicts an Optimal Cognitive Trajectory for Community-Dwelling Older Adults**
+**Frequent engagement in psychological capacity-related apps predicts an optimal cognitive trajectory for community-dwelling older adults: A growth mixture modeling analysis**
 
 _Yehao Chen, Yiang Wang, Moyao Wang, Doris Sau Fung Yu*_
 
